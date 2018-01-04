@@ -3,6 +3,7 @@ package com.slackhub.myapp.controller;
 import com.slackhub.myapp.model.FamousQuotes;
 import com.slackhub.myapp.model.Joke;
 import com.slackhub.myapp.service.JokeService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -23,18 +24,26 @@ import static org.junit.Assert.*;
 @WebMvcTest(JokeController.class)
 public class JokeControllerTest {
 
+    Joke joke;
+    String mockJsonJoke;
+
+    @Before
+    public void setup(){
+        joke = new Joke("tech","What is the synonyms of stress", "Angular" );
+        mockJsonJoke = "{\"type\":\"tech\",\"setup\":\"What is the synonyms of stress\",\"punchline\":\"Angular\"}";
+    }
+
     @Autowired
     MockMvc mockMvc;
 
     @MockBean
     JokeService jokeService;
-    Joke joke = new Joke("tech","What is the synonyms of stress", "Angular" );
-    String mockJsonJoke = "{\"type\":\"tech\",\"setup\":\"What is the synonyms of stress\",\"punchline\":\"Angular\"}";
+
 
     @Test
     public void getJoke() throws Exception {
 
-        Mockito.when(this.jokeService.getJoke(Mockito.any(Joke.class))).thenReturn(joke);
+        Mockito.when(this.jokeService.getJoke()).thenReturn(joke);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/joke")
                 .accept(MediaType.APPLICATION_JSON))

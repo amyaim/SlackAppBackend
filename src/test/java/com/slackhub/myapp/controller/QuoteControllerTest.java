@@ -1,7 +1,8 @@
 package com.slackhub.myapp.controller;
 
 import com.slackhub.myapp.model.FamousQuotes;
-import com.slackhub.myapp.service.FamousQuoteService;
+import com.slackhub.myapp.service.QuoteService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -20,18 +21,26 @@ import static org.junit.Assert.*;
 
 @WebMvcTest(FamousQuoteController.class)
 @RunWith(SpringRunner.class)
-public class FamousQuoteControllerTest {
+public class QuoteControllerTest {
+
+    FamousQuotes famousQuotes;
+    String mockJsonQuote;
+
+    @Before
+    public void setup(){
+        famousQuotes = new FamousQuotes("history","Sally Field", "Last year I was diagnosed with osteoporosis" );
+        mockJsonQuote = "{\"cat\":\"history\",\"author\":\"Sally Field\",\"quote\":\"Last year I was diagnosed with osteoporosis\"}";
+    }
 
     @Autowired
     MockMvc mockMvc;
 
     @MockBean
-    FamousQuoteService famousQuoteService;
-    FamousQuotes famousQuotes = new FamousQuotes("history","Sally Field", "Last year I was diagnosed with osteoporosis" );
-    String mockJsonQuote = "{\"cat\":\"history\",\"author\":\"Sally Field\",\"quote\":\"Last year I was diagnosed with osteoporosis\"}";
+    QuoteService quoteService;
+
     @Test
     public void getQuotes() throws Exception {
-        Mockito.when(famousQuoteService.getQuotes(Mockito.any(FamousQuotes.class))).thenReturn(famousQuotes);
+        Mockito.when(quoteService.getQuotes()).thenReturn(famousQuotes);
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                 .get("/famousQuote").accept(MediaType.APPLICATION_JSON)).andReturn();

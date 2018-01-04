@@ -1,8 +1,9 @@
 package com.slackhub.myapp.controller;
 
-import com.slackhub.myapp.model.Articles;
-import com.slackhub.myapp.model.FamousQuotes;
-import com.slackhub.myapp.service.TechNewsService;
+import com.slackhub.myapp.model.TechRadarNews;
+import com.slackhub.myapp.model.TechWebNews;
+import com.slackhub.myapp.service.TechRadarNewsService;
+import com.slackhub.myapp.service.WebTechNewsService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,15 +21,15 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(TechNewsController.class)
-public class TechNewsControllerTest {
+@WebMvcTest(WebTechNewsController.class)
+public class WebTechNewsControllerTest {
 
-    Articles articles;
+    TechWebNews techWebNews;
     String mockJsonNews;
 
     @Before
     public void setup(){
-        articles = new Articles("Mina Muktar", "Black hole","new findings","12/12/27" );
+        techWebNews = new TechWebNews("Mina Muktar", "Black hole","new findings","12/12/27" );
         mockJsonNews = "{\"author\":\"Mina Muktar\",\"title\":\"Black hole\",\"description\":\"new findings\",\"date\":\"12/12/27\"}";
 
     }
@@ -37,15 +38,12 @@ public class TechNewsControllerTest {
     MockMvc mockMvc;
 
     @MockBean
-    TechNewsService techNewsService;
-
-
+    WebTechNewsService webTechNewsService;
     @Test
     public void getNews() throws Exception {
+        Mockito.when(this.webTechNewsService.getTechNews()).thenReturn(techWebNews);
 
-        Mockito.when(this.techNewsService.getTechNes()).thenReturn(articles);
-
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/techNews")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/webTechNews")
                 .accept(MediaType.APPLICATION_JSON)).andReturn();
 
         int status =mvcResult.getResponse().getStatus();

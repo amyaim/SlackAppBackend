@@ -6,9 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class FamousQuoteService {
+public class QuoteService {
 
-    public FamousQuotes getQuotes(FamousQuotes famousQuotes){
+    public FamousQuotes getQuotes(){
+        FamousQuotes famousQuotes = new FamousQuotes();
         try{
             RestTemplate restTemplate = new RestTemplate();
             famousQuotes = restTemplate.getForObject("https://talaikis.com/api/quotes/random/", FamousQuotes.class);

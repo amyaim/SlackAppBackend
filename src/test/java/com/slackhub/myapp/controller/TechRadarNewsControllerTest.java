@@ -1,8 +1,9 @@
 package com.slackhub.myapp.controller;
 
 import com.slackhub.myapp.model.Articles;
-import com.slackhub.myapp.model.FamousQuotes;
+import com.slackhub.myapp.model.TechRadarNews;
 import com.slackhub.myapp.service.TechNewsService;
+import com.slackhub.myapp.service.TechRadarNewsService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,18 +18,17 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(TechNewsController.class)
-public class TechNewsControllerTest {
+@WebMvcTest(TechRadarNewsController.class)
+public class TechRadarNewsControllerTest {
 
-    Articles articles;
+    TechRadarNews techRadarNews;
     String mockJsonNews;
 
     @Before
     public void setup(){
-        articles = new Articles("Mina Muktar", "Black hole","new findings","12/12/27" );
+        techRadarNews = new TechRadarNews("Mina Muktar", "Black hole","new findings","12/12/27" );
         mockJsonNews = "{\"author\":\"Mina Muktar\",\"title\":\"Black hole\",\"description\":\"new findings\",\"date\":\"12/12/27\"}";
 
     }
@@ -37,15 +37,12 @@ public class TechNewsControllerTest {
     MockMvc mockMvc;
 
     @MockBean
-    TechNewsService techNewsService;
-
-
+    TechRadarNewsService techRadarNewsService;
     @Test
     public void getNews() throws Exception {
+        Mockito.when(this.techRadarNewsService.getTechRadarNews()).thenReturn(techRadarNews);
 
-        Mockito.when(this.techNewsService.getTechNes()).thenReturn(articles);
-
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/techNews")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/techRadarNews")
                 .accept(MediaType.APPLICATION_JSON)).andReturn();
 
         int status =mvcResult.getResponse().getStatus();

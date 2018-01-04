@@ -1,6 +1,6 @@
 package com.slackhub.myapp.controller;
 import com.slackhub.myapp.model.FamousQuotes;
-import com.slackhub.myapp.service.FamousQuoteService;
+import com.slackhub.myapp.service.QuoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,13 +15,12 @@ import org.springframework.http.HttpStatus;
 @CrossOrigin(origins = "http://localhost:4200")
 public class FamousQuoteController {
     @Autowired
-    FamousQuoteService famousQuoteService;
+    QuoteService quoteService;
 
     @GetMapping
     public ResponseEntity<FamousQuotes> getQuotes() {
 
-        FamousQuotes quotes = new FamousQuotes();
-        quotes = famousQuoteService.getQuotes(quotes);
+        FamousQuotes quotes = quoteService.getQuotes();
 
         return new ResponseEntity<FamousQuotes>(quotes , HttpStatus.OK);
 
